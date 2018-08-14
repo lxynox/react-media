@@ -14,20 +14,22 @@ class Media extends React.Component {
       PropTypes.object,
       PropTypes.arrayOf(PropTypes.object.isRequired)
     ]).isRequired,
+    onChange: PropTypes.func,
     render: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     targetWindow: PropTypes.object
   };
 
   static defaultProps = {
-    defaultMatches: true
+    defaultMatches: false,
+    onChange: () => {}
   };
 
   state = {
     matches: this.props.defaultMatches
   };
 
-  updateMatches = () => this.setState({ matches: this.mediaQueryList.matches });
+  updateMatches = () => this.setState({ matches: this.mediaQueryList.matches }, () => this.props.onChange(this.state));
 
   componentWillMount() {
     if (typeof window !== "object") return;
